@@ -1262,11 +1262,11 @@ array_specifier
         $$.arraySizes = new TArraySizes;
         $$.arraySizes->addInnerSize();
     }
-    | LEFT_BRACKET constant_expression RIGHT_BRACKET {
+    | LEFT_BRACKET conditional_expression RIGHT_BRACKET {
         $$.loc = $1.loc;
         $$.arraySizes = new TArraySizes;
 
-        int size;
+        TArraySize size;
         parseContext.arraySizeCheck($2->getLoc(), $2, size);
         $$.arraySizes->addInnerSize(size);
     }
@@ -1274,10 +1274,10 @@ array_specifier
         $$ = $1;
         $$.arraySizes->addInnerSize();
     }
-    | array_specifier LEFT_BRACKET constant_expression RIGHT_BRACKET {
+    | array_specifier LEFT_BRACKET conditional_expression RIGHT_BRACKET {
         $$ = $1;
 
-        int size;
+        TArraySize size;
         parseContext.arraySizeCheck($3->getLoc(), $3, size);
         $$.arraySizes->addInnerSize(size);
     }

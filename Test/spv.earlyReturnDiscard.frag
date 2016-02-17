@@ -1,18 +1,18 @@
-#version 110
+#version 140
 
-varying float d;
-varying vec4 bigColor, smallColor;
-varying vec4 otherColor;
+in float d;
+in vec4 bigColor, smallColor;
+in vec4 otherColor;
 
-varying float c;
+in float c;
 
-varying float threshhold;
-varying float threshhold2;
-varying float threshhold3;
+in float threshhold;
+in float threshhold2;
+in float threshhold3;
 
-varying float minimum;
+in float minimum;
 
-varying vec4 BaseColor;
+in vec4 BaseColor;
 
 bool b;
 

@@ -1,8 +1,8 @@
-#version 110
+#version 140
 
-varying vec4 bigColor;
-varying vec4 BaseColor;
-varying float d;
+in vec4 bigColor;
+in vec4 BaseColor;
+in float d;
 
 void main()
 {

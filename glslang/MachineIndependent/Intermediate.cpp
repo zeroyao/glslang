@@ -121,10 +121,9 @@ TIntermTyped* TIntermediate::addBinaryMath(TOperator op, TIntermTyped* left, TIn
     node->updatePrecision();
 
     //
-    // If they are both constants, they must be folded.
+    // If they are both (non-specialization) constants, they must be folded.
     // (Unless it's the sequence (comma) operator, but that's handled in addComma().)
     //
-
     TIntermConstantUnion *leftTempConstant = left->getAsConstantUnion();
     TIntermConstantUnion *rightTempConstant = right->getAsConstantUnion();
     if (leftTempConstant && rightTempConstant) {
@@ -132,6 +131,13 @@ TIntermTyped* TIntermediate::addBinaryMath(TOperator op, TIntermTyped* left, TIn
         if (folded)
             return folded;
     }
+
+    // If either is a specialization constant, while the other is 
+    // a constant (or specialization constant), the result is still
+    // a specialization constant.
+    if (( left->getType().getQualifier().isSpecConstant() && right->getType().getQualifier().isConstant()) ||
+        (right->getType().getQualifier().isSpecConstant() &&  left->getType().getQualifier().isConstant()))
+        node->getWritableType().getQualifier().makeSpecConstant();
 
     return node;
 }
@@ -270,8 +276,13 @@ TIntermTyped* TIntermediate::addUnaryMath(TOperator op, TIntermTyped* child, TSo
 
     node->updatePrecision();
 
+    // If it's a (non-specialization) constant, it must be folded.
     if (child->getAsConstantUnion())
         return child->getAsConstantUnion()->fold(op, node->getType());
+
+    // If it's a specialiation constant, the result is too.
+    if (child->getType().getQualifier().isSpecConstant())
+        node->getWritableType().getQualifier().makeSpecConstant();
 
     return node;
 }
@@ -467,6 +478,10 @@ TIntermTyped* TIntermediate::addConversion(TOperator op, const TType& type, TInt
     case EOpVectorTimesMatrix:
     case EOpMatrixTimesVector:
     case EOpMatrixTimesScalar:
+
+    case EOpAnd:
+    case EOpInclusiveOr:
+    case EOpExclusiveOr:
 
     case EOpFunctionCall:
     case EOpReturn:

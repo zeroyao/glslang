@@ -1,4 +1,4 @@
-#version 130
+#version 140
 in vec4 bigColor;
 in vec4 bigColor1_1;
 in vec4 bigColor1_2;

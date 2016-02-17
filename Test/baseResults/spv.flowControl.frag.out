@@ -12,7 +12,7 @@ Linked fragment stage:
                               MemoryModel Logical GLSL450
                               EntryPoint Fragment 4  "main" 11 14 17 19 25 30 35
                               ExecutionMode 4 OriginLowerLeft
-                              Source GLSL 120
+                              Source GLSL 140
                               Name 4  "main"
                               Name 9  "color"
                               Name 11  "BaseColor"

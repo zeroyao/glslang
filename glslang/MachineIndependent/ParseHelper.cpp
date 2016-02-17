@@ -1530,7 +1530,7 @@ extern bool PureOperatorBuiltins;
 //
 void TParseContext::nonOpBuiltInCheck(const TSourceLoc& loc, const TFunction& fnCandidate, TIntermAggregate& callNode)
 {
-    // Further maintainance of this function is deprecated, because the "correct" 
+    // Further maintenance of this function is deprecated, because the "correct" 
     // future-oriented design is to not have to do string compares on function names.
 
     // If PureOperatorBuiltins == true, then all built-ins should be mapped
@@ -2788,33 +2788,35 @@ bool TParseContext::containsFieldWithBasicType(const TType& type, TBasicType bas
 //
 // Do size checking for an array type's size.
 //
-void TParseContext::arraySizeCheck(const TSourceLoc& loc, TIntermTyped* expr, int& size)
+void TParseContext::arraySizeCheck(const TSourceLoc& loc, TIntermTyped* expr, TArraySize& sizePair)
 {
     bool isConst = false;
+    sizePair.size = 1;
+    sizePair.node = nullptr;
 
     TIntermConstantUnion* constant = expr->getAsConstantUnion();
     if (constant) {
-        size = constant->getConstArray()[0].getIConst();
+        // handle true (non-specialization) constant
+        sizePair.size = constant->getConstArray()[0].getIConst();
         isConst = true;
     } else {
-        TIntermSymbol* symbol = expr->getAsSymbolNode();
-        if (symbol && symbol->getConstArray().size() > 0) {
-            size = symbol->getConstArray()[0].getIConst();
+        // see if it's a specialization constant instead
+        if (expr->getQualifier().isSpecConstant()) {
             isConst = true;
+            sizePair.node = expr;
+            TIntermSymbol* symbol = expr->getAsSymbolNode();
+            if (symbol && symbol->getConstArray().size() > 0)
+                sizePair.size = symbol->getConstArray()[0].getIConst();
         }
     }
 
     if (! isConst || (expr->getBasicType() != EbtInt && expr->getBasicType() != EbtUint)) {
         error(loc, "array size must be a constant integer expression", "", "");
-        size = 1;
-
         return;
     }
 
-    if (size <= 0) {
+    if (sizePair.size <= 0) {
         error(loc, "array size must be a positive integer", "", "");
-        size = 1;
-
         return;
     }
 }

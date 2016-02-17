@@ -1,4 +1,6 @@
 spv.100ops.frag
+Warning, version 310 is not yet complete; most version-specific features are present, but some are missing.
+
 
 Linked fragment stage:
 
@@ -12,7 +14,7 @@ Linked fragment stage:
                               MemoryModel Logical GLSL450
                               EntryPoint Fragment 4  "main" 21 26 37
                               ExecutionMode 4 OriginLowerLeft
-                              Source ESSL 100
+                              Source ESSL 310
                               Name 4  "main"
                               Name 8  "foo("
                               Name 11  "face1"
@@ -20,13 +22,29 @@ Linked fragment stage:
                               Name 17  "z"
                               Name 21  "low"
                               Name 26  "high"
-                              Name 37  "gl_FragColor"
+                              Name 37  "Color"
+                              Decorate 8(foo() RelaxedPrecision
                               Decorate 11(face1) RelaxedPrecision
                               Decorate 13(face2) RelaxedPrecision
                               Decorate 17(z) RelaxedPrecision
                               Decorate 21(low) RelaxedPrecision
+                              Decorate 22 RelaxedPrecision
+                              Decorate 23 RelaxedPrecision
+                              Decorate 25 RelaxedPrecision
                               Decorate 26(high) RelaxedPrecision
-                              Decorate 37(gl_FragColor) RelaxedPrecision
+                              Decorate 27 RelaxedPrecision
+                              Decorate 32 RelaxedPrecision
+                              Decorate 34 RelaxedPrecision
+                              Decorate 37(Color) RelaxedPrecision
+                              Decorate 38 RelaxedPrecision
+                              Decorate 39 RelaxedPrecision
+                              Decorate 40 RelaxedPrecision
+                              Decorate 41 RelaxedPrecision
+                              Decorate 42 RelaxedPrecision
+                              Decorate 43 RelaxedPrecision
+                              Decorate 44 RelaxedPrecision
+                              Decorate 45 RelaxedPrecision
+                              Decorate 46 RelaxedPrecision
                2:             TypeVoid
                3:             TypeFunction 2
                6:             TypeFloat 32
@@ -48,7 +66,7 @@ Linked fragment stage:
               33:     15(int) Constant 1
               35:             TypeVector 6(float) 4
               36:             TypePointer Output 35(fvec4)
-37(gl_FragColor):     36(ptr) Variable Output
+       37(Color):     36(ptr) Variable Output
          4(main):           2 Function None 3
                5:             Label
            17(z):     16(ptr) Variable Function
@@ -76,7 +94,7 @@ Linked fragment stage:
               43:    6(float) FunctionCall 8(foo()
               44:   35(fvec4) CompositeConstruct 43 43 43 43
               45:   35(fvec4) FAdd 42 44
-                              Store 37(gl_FragColor) 45
+                              Store 37(Color) 45
                               Return
                               FunctionEnd
          8(foo():    6(float) Function None 7

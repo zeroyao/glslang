@@ -52,10 +52,15 @@ layout(input_attachment_index = 2) uniform subpassInput subD;
 layout(input_attachment_index = 3) uniform texture2D subDbad1;          // ERROR, not a texture
 layout(input_attachment_index = 4) writeonly uniform image2D subDbad2;  // ERROR, not an image
 uniform subpassInput subDbad3;                                          // ERROR, need attachment number
+layout(input_attachment_index = 2) uniform subpassInputMS subDMS;
 
 void foo()
 {
     vec4 v = subpassLoad(subD);
+    v += subpassLoadMS(subD);      // ERROR, no such function
+    v += subpassLoad(subD, 2);     // ERROR, no such sig.
+    v += subpassLoad(subDMS, 2);
+    v += subpassLoadMS(subDMS, 2); // ERROR, no such function
 }
 
 subroutine int fooS;                              // ERROR, not in SPV

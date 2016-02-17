@@ -13,17 +13,17 @@ out uvec4 ucolor;
 
 void foo(isubpassInputMS sb)
 {
-    icolor += subpassLoadMS(sb, 3);
+    icolor += subpassLoad(sb, 3);
 }
 
 void main()
 {
     color = subpassLoad(sub);
-    color += subpassLoadMS(subMS, 3);
+    color += subpassLoad(subMS, 3);
     icolor = subpassLoad(isub);
-    icolor += subpassLoadMS(isubMS, 3);
+    icolor += subpassLoad(isubMS, 3);
     ucolor = subpassLoad(usub);
-    ucolor += subpassLoadMS(usubMS, 3);
+    ucolor += subpassLoad(usubMS, 3);
 
     foo(isubMS);
 }

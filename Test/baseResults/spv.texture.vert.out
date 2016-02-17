@@ -11,7 +11,7 @@ Linked vertex stage:
                1:             ExtInstImport  "GLSL.std.450"
                               MemoryModel Logical GLSL450
                               EntryPoint Vertex 4  "main" 39 140
-                              Source GLSL 130
+                              Source GLSL 140
                               Name 4  "main"
                               Name 8  "lod"
                               Name 10  "coords1D"

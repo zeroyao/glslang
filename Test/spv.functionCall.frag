@@ -1,4 +1,4 @@
-#version 130
+#version 140
 
 varying vec4 bigColor;
 varying vec4 BaseColor;

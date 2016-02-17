@@ -1,8 +1,6 @@
 #version 150
 
-
-varying vec4 BaseColor;
-
+in vec4 BaseColor;
 
 vec4 foo()
 {

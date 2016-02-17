@@ -719,6 +719,15 @@ public:
         // This allows front-end constant folding.
         return storage == EvqConst && ! specConstant;
     }
+    bool isConstant() const
+    {
+        // True if is either kind of constant; specialization or regular.
+        return isFrontEndConstant() || isSpecConstant();
+    }
+    void makeSpecConstant()
+    {
+        specConstant = true;
+    }
     static const char* getLayoutPackingString(TLayoutPacking packing)
     {
         switch (packing) {
@@ -1345,7 +1354,7 @@ public:
             arraySizes->addOuterSizes(s);
     }
     void changeOuterArraySize(int s) { arraySizes->changeOuterSize(s); }
-    void setImplicitArraySize (int s) { arraySizes->setImplicitSize(s); }
+    void setImplicitArraySize(int s) { arraySizes->setImplicitSize(s); }
 
     // Recursively make the implicit array size the explicit array size, through the type tree.
     void adoptImplicitArraySizes()

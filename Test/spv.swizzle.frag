@@ -1,10 +1,10 @@
-#version 110
+#version 140
 
-varying float blend;
-varying vec4 u;
+in float blend;
+in vec4 u;
 bool p;
 
-varying vec2 t;
+in vec2 t;
 
 void main()
 {

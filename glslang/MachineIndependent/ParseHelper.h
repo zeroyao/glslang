@@ -133,7 +133,7 @@ public:
     void globalCheck(const TSourceLoc&, const char* token);
     bool constructorError(const TSourceLoc&, TIntermNode*, TFunction&, TOperator, TType&);
     bool constructorTextureSamplerError(const TSourceLoc&, const TFunction&);
-    void arraySizeCheck(const TSourceLoc&, TIntermTyped* expr, int& size);
+    void arraySizeCheck(const TSourceLoc&, TIntermTyped* expr, TArraySize&);
     bool arrayQualifierError(const TSourceLoc&, const TQualifier&);
     bool arrayError(const TSourceLoc&, const TType&);
     void arraySizeRequiredCheck(const TSourceLoc&, const TArraySizes&);
