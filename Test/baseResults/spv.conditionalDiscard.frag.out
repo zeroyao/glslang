@@ -20,6 +20,7 @@ Linked fragment stage:
                               Name 13  "tex"
                               Name 17  "coord"
                               Name 34  "gl_FragColor"
+                              Decorate 13(tex) DescriptorSet 0
                2:             TypeVoid
                3:             TypeFunction 2
                6:             TypeFloat 32

@@ -1,8 +1,8 @@
 #version 120
 
-uniform float d;
-uniform vec4 bigColor, smallColor;
-uniform vec4 otherColor;
+varying float d;
+varying vec4 bigColor, smallColor;
+varying vec4 otherColor;
 
 varying float c;
 varying vec4 BaseColor;

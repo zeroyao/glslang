@@ -322,6 +322,7 @@ enum TOperator {
     EOpConstructDMat4x3,
     EOpConstructDMat4x4,
     EOpConstructStruct,
+    EOpConstructTextureSampler,
     EOpConstructGuardEnd,
 
     //
@@ -369,6 +370,8 @@ enum TOperator {
     EOpImageAtomicExchange,
     EOpImageAtomicCompSwap,
 
+    EOpSubpassLoad,
+    EOpSubpassLoadMS,
     EOpSparseImageLoad,
 
     EOpImageGuardEnd,
@@ -604,7 +607,7 @@ protected:
 //
 class TIntermSymbol : public TIntermTyped {
 public:
-    // if symbol is initialized as symbol(sym), the memory comes from the poolallocator of sym. If sym comes from
+    // if symbol is initialized as symbol(sym), the memory comes from the pool allocator of sym. If sym comes from
     // per process threadPoolAllocator, then it causes increased memory usage per compile
     // it is essential to use "symbol = sym" to assign to symbol
     TIntermSymbol(int i, const TString& n, const TType& t) : 
@@ -649,6 +652,7 @@ struct TCrackedTextureOp {
     bool offsets;
     bool gather;
     bool grad;
+    bool subpass;
     bool lodClamp;
 };
 
@@ -679,6 +683,7 @@ public:
         cracked.offsets = false;
         cracked.gather = false;
         cracked.grad = false;
+        cracked.subpass = false;
         cracked.lodClamp = false;
 
         switch (op) {
@@ -787,6 +792,10 @@ public:
         case EOpSparseTextureGatherOffsets:
             cracked.gather = true;
             cracked.offsets = true;
+            break;
+        case EOpSubpassLoad:
+        case EOpSubpassLoadMS:
+            cracked.subpass = true;
             break;
         default:
             break;
@@ -968,7 +977,7 @@ public:
     void incrementDepth(TIntermNode *current)
     {
         depth++;
-        maxDepth = std::max(maxDepth, depth);
+        maxDepth = (std::max)(maxDepth, depth);
         path.push_back(current);
     }
 

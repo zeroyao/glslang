@@ -26,6 +26,7 @@ Linked fragment stage:
                               Name 39  "alpha"
                               Name 45  "gl_FragColor"
                               Name 48  "foo"
+                              Decorate 13(texSampler2D) DescriptorSet 0
                2:             TypeVoid
                3:             TypeFunction 2
                6:             TypeFloat 32

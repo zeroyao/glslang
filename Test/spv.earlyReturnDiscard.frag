@@ -1,20 +1,20 @@
 #version 110
 
-uniform float d;
-uniform vec4 bigColor, smallColor;
-uniform vec4 otherColor;
+varying float d;
+varying vec4 bigColor, smallColor;
+varying vec4 otherColor;
 
 varying float c;
 
-uniform float threshhold;
-uniform float threshhold2;
-uniform float threshhold3;
+varying float threshhold;
+varying float threshhold2;
+varying float threshhold3;
 
-uniform float minimum;
+varying float minimum;
 
 varying vec4 BaseColor;
 
-uniform bool b;
+bool b;
 
 void main()
 {

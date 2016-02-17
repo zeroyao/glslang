@@ -87,6 +87,7 @@ void TType::buildMangledName(TString& mangledName)
         case EsdCube:     mangledName += "C";  break;
         case EsdRect:     mangledName += "R2"; break;
         case EsdBuffer:   mangledName += "B";  break;
+        case EsdSubpass:  mangledName += "P";  break;
         default: break; // some compilers want this
         }
         if (sampler.ms)

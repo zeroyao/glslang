@@ -125,7 +125,7 @@ class TVariable;
 class TIntermediate {
 public:
     explicit TIntermediate(EShLanguage l, int v = 0, EProfile p = ENoProfile) : language(l), treeRoot(0), profile(p), version(v), spv(0),
-        numMains(0), numErrors(0), recursive(false),
+        numMains(0), numErrors(0), numPushConstants(0), recursive(false),
         invocations(TQualifier::layoutNotSet), vertices(TQualifier::layoutNotSet), inputPrimitive(ElgNone), outputPrimitive(ElgNone),
         pixelCenterInteger(false), originUpperLeft(false),
         vertexSpacing(EvsNone), vertexOrder(EvoNone), pointMode(false), earlyFragmentTests(false), depthLayout(EldNone), depthReplacing(false), blendEquations(0), xfbMode(false)
@@ -133,6 +133,9 @@ public:
         localSize[0] = 1;
         localSize[1] = 1;
         localSize[2] = 1;
+        localSizeSpecId[0] = TQualifier::layoutNotSet;
+        localSizeSpecId[1] = TQualifier::layoutNotSet;
+        localSizeSpecId[2] = TQualifier::layoutNotSet;
         xfbBuffers.resize(TQualifier::layoutXfbBufferEnd);
     }
     void setLimits(const TBuiltInResource& r) { resources = r; }
@@ -156,8 +159,10 @@ public:
     void addMainCount() { ++numMains; }
     int getNumMains() const { return numMains; }
     int getNumErrors() const { return numErrors; }
+    void addPushConstantCount() { ++numPushConstants; }
     bool isRecursive() const { return recursive; }
     
+    TIntermSymbol* addSymbol(int Id, const TString&, const TType&, const TConstUnionArray&, const TSourceLoc&);
     TIntermSymbol* addSymbol(int Id, const TString&, const TType&, const TSourceLoc&);
     TIntermSymbol* addSymbol(const TVariable&, const TSourceLoc&);
     TIntermTyped* addConversion(TOperator, const TType&, TIntermTyped*) const;
@@ -255,6 +260,14 @@ public:
     }
     unsigned int getLocalSize(int dim) const { return localSize[dim]; }
 
+    bool setLocalSizeSpecId(int dim, int id)
+    {
+        if (localSizeSpecId[dim] != TQualifier::layoutNotSet)
+            return id == localSizeSpecId[dim];
+        localSizeSpecId[dim] = id;
+        return true;
+    }
+
     void setXfbMode() { xfbMode = true; }
     bool getXfbMode() const { return xfbMode; }
     bool setOutputPrimitive(TLayoutGeometry p)
@@ -328,6 +341,7 @@ protected:
     TBuiltInResource resources;
     int numMains;
     int numErrors;
+    int numPushConstants;
     bool recursive;
     int invocations;
     int vertices;
@@ -339,6 +353,7 @@ protected:
     TVertexOrder vertexOrder;
     bool pointMode;
     int localSize[3];
+    int localSizeSpecId[3];
     bool earlyFragmentTests;
     TLayoutDepth depthLayout;
     bool depthReplacing;

@@ -31,6 +31,7 @@ Linked fragment stage:
                               MemberName 134(str) 2  "c"
                               Name 136  "t"
                               Name 149  "gl_FragColor"
+                              Decorate 111(samp2D) DescriptorSet 0
                2:             TypeVoid
                3:             TypeFunction 2
                6:             TypeFloat 32

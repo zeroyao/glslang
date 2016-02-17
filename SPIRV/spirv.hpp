@@ -46,7 +46,7 @@ namespace spv {
 
 typedef unsigned int Id;
 
-#define SPV_VERSION 10000
+#define SPV_VERSION 0x10000
 #define SPV_REVISION 2
 
 static const unsigned int MagicNumber = 0x07230203;
@@ -875,4 +875,3 @@ inline KernelProfilingInfoMask operator|(KernelProfilingInfoMask a, KernelProfil
 }  // end namespace spv
 
 #endif  // #ifndef spirv_H
-

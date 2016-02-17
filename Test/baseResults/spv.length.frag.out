@@ -39,8 +39,8 @@ Linked fragment stage:
               28:   24(fvec4) ConstantComposite 27 27 27 27
               29:     10(int) Constant 3
               30:             TypeArray 24(fvec4) 29
-              31:             TypePointer UniformConstant 30
-           32(u):     31(ptr) Variable UniformConstant
+              31:             TypePointer Private 30
+           32(u):     31(ptr) Variable Private
          4(main):           2 Function None 3
                5:             Label
             9(t):      8(ptr) Variable Function

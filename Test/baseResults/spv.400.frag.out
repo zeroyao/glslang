@@ -49,8 +49,12 @@ Linked fragment stage:
                               Name 1078  "isamp2DA"
                               Name 1095  "gl_FragCoord"
                               Name 1097  "vl2"
+                              Decorate 17(u2drs) DescriptorSet 0
+                              Decorate 1023(arrayedSampler) DescriptorSet 0
                               Decorate 1025(i) Flat
                               Decorate 1036(gl_ClipDistance) BuiltIn ClipDistance
+                              Decorate 1052(samp2dr) DescriptorSet 0
+                              Decorate 1078(isamp2DA) DescriptorSet 0
                               Decorate 1095(gl_FragCoord) BuiltIn FragCoord
                               Decorate 1097(vl2) Location 6
                2:             TypeVoid

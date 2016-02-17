@@ -7,7 +7,7 @@ varying vec4 gl_TexCoord[6];
 
 varying  vec4 userIn[2];
 
-uniform int a, b;
+flat in int a, b;
 
 void main()
 {

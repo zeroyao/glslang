@@ -2,7 +2,7 @@
 
 lowp float foo();
 
-uniform int low, high;
+varying lowp float low, high;
 
 lowp float face1 = 11.0;
 
@@ -10,7 +10,7 @@ void main()
 {
     int z = 3;
 
-    if (2 * low + 1 < high)
+    if (2.0 * low + 1.0 < high)
         ++z;
 
     gl_FragColor = face1 * vec4(z) + foo();

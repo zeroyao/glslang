@@ -440,7 +440,7 @@ namespace spv {
         }
 
         // Store IDs from instruction in our map
-        for (int op = 0; op < spv::InstructionDesc[opCode].operands.getNum(); ++op, --numOperands) {
+        for (int op = 0; numOperands > 0; ++op, --numOperands) {
             switch (spv::InstructionDesc[opCode].operands.getClass(op)) {
             case spv::OperandId:
                 idFn(asId(word++));
@@ -481,6 +481,7 @@ namespace spv {
             case spv::OperandExecutionMode:
             case spv::OperandStorage:
             case spv::OperandDimensionality:
+            case spv::OperandImageOperands:
             case spv::OperandDecoration:
             case spv::OperandBuiltIn:
             case spv::OperandSelect:
@@ -496,6 +497,7 @@ namespace spv {
                 break;
 
             default:
+                assert(0 && "Unhandled Operand Class");
                 break;
             }
         }
@@ -726,13 +728,16 @@ namespace spv {
                 const int wordCount = asWordCount(start);
 
                 // Add local variables to the map
-                if ((opCode == spv::OpVariable && spv[start+3] == spv::StorageClassFunction && asWordCount(start) == 4))
+                if ((opCode == spv::OpVariable && spv[start+3] == spv::StorageClassFunction && asWordCount(start) == 4)) {
                     fnLocalVars.insert(asId(start+2));
+                    return true;
+                }
 
                 // Ignore process vars referenced via access chain
                 if ((opCode == spv::OpAccessChain || opCode == spv::OpInBoundsAccessChain) && fnLocalVars.count(asId(start+3)) > 0) {
                     fnLocalVars.erase(asId(start+3));
                     idMap.erase(asId(start+3));
+                    return true;
                 }
 
                 if (opCode == spv::OpLoad && fnLocalVars.count(asId(start+3)) > 0) {
@@ -747,6 +752,7 @@ namespace spv {
                         fnLocalVars.erase(asId(start+3));
                         idMap.erase(asId(start+3));
                     }
+                    return true;
                 }
 
                 if (opCode == spv::OpStore && fnLocalVars.count(asId(start+1)) > 0) {
@@ -763,11 +769,20 @@ namespace spv {
                         fnLocalVars.erase(asId(start+3));
                         idMap.erase(asId(start+3));
                     }
+                    return true;
                 }
 
-                return true;
+                return false;
             },
-            op_fn_nop);
+
+            // If local var id used anywhere else, don't eliminate
+            [&](spv::Id& id) { 
+                if (fnLocalVars.count(id) > 0) {
+                    fnLocalVars.erase(id);
+                    idMap.erase(id);
+                }
+            }
+        );
 
         process(
             [&](spv::Op opCode, unsigned start) {

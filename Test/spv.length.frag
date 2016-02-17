@@ -1,6 +1,6 @@
 #version 120
 
-uniform vec4 u[3];
+vec4 u[3];
 
 varying vec2 v[2];
 

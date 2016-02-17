@@ -1,8 +1,8 @@
 #version 110
 
-uniform float blend;
-uniform vec4 u;
-uniform bool p;
+varying float blend;
+varying vec4 u;
+bool p;
 
 varying vec2 t;
 

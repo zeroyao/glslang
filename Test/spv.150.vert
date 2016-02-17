@@ -2,8 +2,8 @@
 
 in vec4 iv4;
 
-uniform float ps;
-uniform int ui;
+in float ps;
+in int ui;
 
 invariant gl_Position;
 

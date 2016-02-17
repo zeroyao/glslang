@@ -3,7 +3,7 @@
 attribute vec3 v3;
 attribute vec4 v4;
 
-uniform mat3x2 m32;
+varying mat3x2 m32;
 
 const vec2 cv2 = vec2(10.0, 20.0);
 const mat2x4 m24 = mat2x4(3.0);
