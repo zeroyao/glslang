@@ -157,6 +157,15 @@ public:
         return lastOffset + lastMemberSize;
     }
 
+    // Calculate the block data stride, if it is used in an array.
+    int getBlockStride(const TType& blockType)
+    {
+        int size, dummyStride;
+        intermediate.getBaseAlignment(blockType, size, dummyStride, blockType.getQualifier().layoutPacking == ElpStd140,
+            blockType.getQualifier().layoutMatrix == ElmRowMajor);
+        return size;
+    }
+
     // Traverse the provided deref chain, including the base, and
     // - build a full reflection-granularity name, array size, etc. entry out of it, if it goes down to that granularity
     // - recursively expand any variable array index in the middle of that traversal
@@ -173,18 +182,24 @@ public:
         for (; deref != derefs.end(); ++deref) {
             TIntermBinary* visitNode = *deref;
             terminalType = &visitNode->getType();
-            int index;
+            int index, blockStride;
+            bool expandArray;
             switch (visitNode->getOp()) {
             case EOpIndexIndirect:
                 // Visit all the indices of this array, and for each one add on the remaining dereferencing
+                expandArray = baseType.getBasicType() != EbtBlock || baseType.getQualifier().storage == EvqUniform;
+                blockStride = expandArray && offset >= 0 ? getBlockStride(*terminalType) : 0;
                 for (int i = 0; i < visitNode->getLeft()->getType().getOuterArraySize(); ++i) {
                     TString newBaseName = name;
-                    if (baseType.getBasicType() != EbtBlock)
+                    if (expandArray)
                         newBaseName.append(TString("[") + String(i) + "]");
                     TList<TIntermBinary*>::const_iterator nextDeref = deref;
                     ++nextDeref;
                     TType derefType(*terminalType, 0);
-                    blowUpActiveAggregate(derefType, newBaseName, derefs, nextDeref, offset, blockIndex, arraySize);
+                    int newOffset = offset + i * blockStride;
+                    blowUpActiveAggregate(derefType, newBaseName, derefs, nextDeref, newOffset, blockIndex, arraySize);
+                    if (!expandArray)
+                        break;
                 }
 
                 // it was all completed in the recursive calls above
